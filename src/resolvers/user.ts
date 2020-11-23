@@ -44,11 +44,29 @@ class UserResponse {
 
 @Resolver()
 export class UserResolver {
-  @Mutation(() => User)
+  @Mutation(() => UserResponse)
   async register(
     @Arg('options') options: UsernamePasswordInput,
     @Ctx() { em }: MyContext
-  ) {
+  ): Promise<UserResponse> {
+    if (options.username.length <= 2) {
+      return {
+        errors: [{
+          field: 'username',
+          message: 'Username length must be greater than 2',
+        }],
+      };
+    }
+
+    if (options.password.length <= 3) {
+      return {
+        errors: [{
+          field: 'password',
+          message: 'Password length must be greater than 3',
+        }],
+      };
+    }
+
     const hashedPassword = await argon2.hash(options.password);
 
     const user = em.create(User, {
@@ -56,9 +74,21 @@ export class UserResolver {
       password: hashedPassword,
     });
 
-    await em.persistAndFlush(user);
+    try {
+      await em.persistAndFlush(user);
+    } catch (err) {
+      // Duplicate username error
+      if (err.code === '23505') {
+        return {
+          errors: [{
+            field: 'username',
+            message: 'Username is already registered',
+          }],
+        };
+      }
+    }
 
-    return user;
+    return { user };
   }
 
   @Mutation(() => UserResponse)
@@ -72,7 +102,7 @@ export class UserResolver {
       return {
         errors: [{
           field: 'username',
-          message: 'Username or password is incorrect'
+          message: 'Username or password is incorrect',
         }],
       };
     }
@@ -83,13 +113,11 @@ export class UserResolver {
       return {
         errors: [{
           field: 'password',
-          message: 'Username or password is incorrect'
+          message: 'Username or password is incorrect',
         }],
       };
     }
 
-    return {
-      user,
-    };
+    return { user };
   }
 }
