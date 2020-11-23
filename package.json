@@ -1,0 +1,30 @@
+{
+  "name": "reddit-clone-server",
+  "version": "1.0.0",
+  "description": "Reddit clone server built with Node, TypeScript, Express, Apollo Server, GraphQL, TypeGraphQL, PostgreSQL, and mikroORM",
+  "main": "index.js",
+  "scripts": {
+    "watch": "tsc -w",
+    "dev": "nodemon dist/index.js",
+    "start": "node dist/index.js",
+    "start2": "ts-node src/index.ts",
+    "dev2": "nodemon --exec ts-node src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kbbushman/reddit-clone-server.git"
+  },
+  "keywords": [],
+  "author": "Kenneth Bushman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kbbushman/reddit-clone-server/issues"
+  },
+  "homepage": "https://github.com/kbbushman/reddit-clone-server#readme",
+  "devDependencies": {
+    "@types/node": "^14.14.9",
+    "nodemon": "^2.0.6",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.1.2"
+  }
+}
