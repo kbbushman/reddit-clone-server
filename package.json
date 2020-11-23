@@ -33,8 +33,7 @@
     "@mikro-orm/core": "^4.3.1",
     "@mikro-orm/migrations": "^4.3.1",
     "@mikro-orm/postgresql": "^4.3.1",
-    "pg": "^8.5.1",
-    "type-graphql": "^1.1.1"
+    "pg": "^8.5.1"
   },
   "mikro-orm": {
     "useTsNode": true,
