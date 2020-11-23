@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/kbbushman/reddit-clone-server#readme",
   "devDependencies": {
+    "@types/express": "^4.17.9",
     "@types/node": "^14.14.9",
     "nodemon": "^2.0.6",
     "ts-node": "^9.0.0",
