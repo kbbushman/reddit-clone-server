@@ -11,6 +11,7 @@ import { HelloResolver } from './resolvers/hello';
 import { PostResolver } from './resolvers/post';
 import { UserResolver } from './resolvers/user';
 import { __prod__ } from './constants';
+import { MyContext } from './types';
 
 const main = async () => {
   const orm = await MikroORM.init(mikroOrmConfig);
@@ -44,7 +45,7 @@ const main = async () => {
       resolvers: [HelloResolver, PostResolver, UserResolver],
       validate: false,
     }),
-    context: ({req, res}) => ({ em: orm.em, req, res }),
+    context: ({req, res}): MyContext => <MyContext>({ em: orm.em, req, res }),
   });
 
   apolloServer.applyMiddleware({ app });
