@@ -33,6 +33,7 @@ const main = async () => {
         sameSite: 'lax', // csrf
         secure: __prod__,
       },
+      saveUninitialized: false,
       secret: 'owkxlfwoslfhboq320soq2111osdodshf320soq2111osdodshf',
       resave: false,
     })
