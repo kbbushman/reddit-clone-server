@@ -40,7 +40,6 @@
     "@mikro-orm/core": "^4.3.1",
     "@mikro-orm/migrations": "^4.3.1",
     "@mikro-orm/postgresql": "^4.3.1",
-    "@types/nodemailer": "^6.4.0",
     "apollo-server-express": "^2.19.0",
     "argon2": "^0.27.0",
     "class-validator": "^0.12.2",
