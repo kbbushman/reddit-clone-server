@@ -13,7 +13,7 @@ import { MyContext } from '../types';
 import { User } from '../entities/User';
 import { COOKIE_NAME } from '../constants';
 import { UsernamePasswordInput } from './UsernamePasswordInput';
-import { validateRegister } from 'src/utils/validateRegister';
+import { validateRegister } from '../utils/validateRegister';
 
 @ObjectType()
 class FieldError {
@@ -63,7 +63,7 @@ export class UserResolver {
     @Ctx() { em, req }: MyContext
   ): Promise<UserResponse> {
     const errors = validateRegister(options);
-    
+
     if (errors) {
       return { errors };
     }
