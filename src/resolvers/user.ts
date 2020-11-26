@@ -119,7 +119,7 @@ export class UserResolver {
     if (!user) {
       return {
         errors: [{
-          field: 'username',
+          field: 'usernameOrEmail',
           message: 'Username or password is incorrect',
         }],
       };
