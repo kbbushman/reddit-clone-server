@@ -1,6 +1,16 @@
 import { Post } from '../entities/Post';
-import { Resolver, Query, Arg, Mutation } from 'type-graphql';
+import { Resolver, Query, Arg, Mutation, InputType, Field, Ctx } from 'type-graphql';
 import { getConnection } from 'typeorm';
+import { MyContext } from 'src/types';
+
+@InputType()
+class PostInput {
+  @Field()
+  title: string;
+
+  @Field()
+  text: string;
+}
 
 @Resolver()
 export class PostResolver {
@@ -15,26 +25,26 @@ export class PostResolver {
   }
 
   @Mutation(() => Post)
-  async createPost(@Arg('title') title: string): Promise<Post> {
-    let post;
-
-    try {
-      const result = await getConnection()
-        .createQueryBuilder()
-        .insert()
-        .into(Post)
-        .values({
-          title: title,
-        })
-        .returning('*')
-        .execute();
-
-      post = result.raw[0];
-    } catch (error) {
-      return post;
+  async createPost(
+    @Arg('input') input: PostInput,
+    @Ctx() { req }: MyContext
+  ): Promise<Post> {
+    if (!req.session.userId) {
+      throw new Error('Not authorized. Please login and try again');
     }
 
-    return post;
+    const result = await getConnection()
+      .createQueryBuilder()
+      .insert()
+      .into(Post)
+      .values({
+        ...input,
+        creatorId: req.session.userId,
+      })
+      .returning('*')
+      .execute();
+
+    return result.raw[0];
   }
 
   @Mutation(() => Post)
