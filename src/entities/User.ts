@@ -9,7 +9,7 @@ import {
   UpdateDateColumn
 } from "typeorm";
 import { Post } from "./Post";
-import { Updoot } from "./Updoots";
+import { Updoot } from "./Updoot";
 
 @ObjectType()
 @Entity()

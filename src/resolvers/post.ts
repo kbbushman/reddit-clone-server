@@ -16,7 +16,7 @@ import {
 import { Post } from '../entities/Post';
 import { MyContext } from '../types';
 import { isAuth } from '../middleware/isAuth';
-import { Updoot } from 'src/entities/Updoots';
+import { Updoot } from 'src/entities/Updoot';
 
 @InputType()
 class PostInput {
