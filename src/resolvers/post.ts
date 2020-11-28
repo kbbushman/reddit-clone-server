@@ -7,7 +7,8 @@ import {
   InputType,
   Field,
   Ctx,
-  UseMiddleware
+  UseMiddleware,
+  Int
 } from 'type-graphql';
 import { Post } from '../entities/Post';
 import { MyContext } from '../types';
@@ -25,8 +26,26 @@ class PostInput {
 @Resolver()
 export class PostResolver {
   @Query(() => [Post])
-  posts(): Promise<Post[]> {
-    return Post.find();
+  posts(
+    @Arg('limit', () => Int) limit: number,
+    // Cursor is a better option than offset in this application
+    // Cursor is the current post createAt data. Returns all posts from cursor forward
+    @Arg('cursor', () => String, {nullable: true}) cursor: string | null,
+  ): Promise<Post[]> {
+    const realLimit = Math.min(50, limit);
+    const qb = getConnection()
+    .getRepository(Post)
+      .createQueryBuilder()
+      .orderBy('"createdAt"', 'DESC')
+      .take(realLimit)
+
+    if (cursor) {
+      qb.where('"createdAt" < :cursor', {
+        cursor: new Date(parseInt(cursor)),
+      });
+    }
+
+    return qb.getMany();
   }
 
   @Query(() => Post, {nullable: true})
