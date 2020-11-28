@@ -1,3 +1,4 @@
+import path from 'path';
 import 'reflect-metadata';
 import express from 'express';
 import Redis from 'ioredis';
@@ -16,15 +17,18 @@ import { Post } from './entities/Post';
 import { User } from './entities/User';
 
 const main = async () => {
-  await createConnection({
+  const conn = await createConnection({
     type: 'postgres',
     database: 'redditclone',
     username: 'postgres',
     password: 'postgres',
     logging: true,
     synchronize: true,
+    migrations: [path.join(__dirname, './migrations/*')],
     entities: [Post, User],
   });
+
+  await conn.runMigrations();
 
   const app = express();
 
