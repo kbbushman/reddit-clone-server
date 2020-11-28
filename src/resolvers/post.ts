@@ -12,7 +12,6 @@ import {
   FieldResolver,
   Root,
   ObjectType,
-  Info
 } from 'type-graphql';
 import { Post } from '../entities/Post';
 import { MyContext } from '../types';
