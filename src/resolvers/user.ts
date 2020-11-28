@@ -8,7 +8,9 @@ import {
   Field,
   Ctx,
   ObjectType,
-  Query
+  Query,
+  FieldResolver,
+  Root
 } from 'type-graphql';
 import { MyContext } from '../types';
 import { User } from '../entities/User';
@@ -36,8 +38,19 @@ class UserResponse {
   user?: User;
 }
 
-@Resolver()
+@Resolver(User)
 export class UserResolver {
+  @FieldResolver(() => String)
+  email(@Root() user: User, @Ctx() { req }: MyContext) {
+    // This is the current user, ok to show their own email
+    if (req.session.userId === user.id) {
+      return user.email;
+    }
+
+    // Current user cannot see other users email
+    return '';
+  }
+
   @Mutation(() => UserResponse)
   async changePassword(
     @Arg('token') token: string,
