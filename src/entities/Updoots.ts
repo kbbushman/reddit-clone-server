@@ -1,0 +1,39 @@
+import { Field, ObjectType } from "type-graphql";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryColumn,
+} from "typeorm";
+import { Post } from "./Post";
+import { User } from "./User";
+
+// many to n (many to many)
+// user <-> posts
+// user -> joint table <- posts 
+// user -> updoot <-- posts
+
+@ObjectType()
+@Entity()
+export class Updoot extends BaseEntity {
+  @Field()
+  @Column({type: 'int'})
+  value: number;
+
+  @Field()
+  @PrimaryColumn()
+  userId: number;
+
+  @Field()
+  @ManyToOne(() => User, user => user.updoots)
+  user: User;
+
+  @Field()
+  @PrimaryColumn()
+  postId: number;
+
+  @Field()
+  @ManyToOne(() => Post, post => post.updoots)
+  post: Post;
+}
